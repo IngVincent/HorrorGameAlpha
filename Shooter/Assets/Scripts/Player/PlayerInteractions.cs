@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 
 public class PlayerInteractions : MonoBehaviour
@@ -11,6 +12,7 @@ public class PlayerInteractions : MonoBehaviour
 
     public AudioSource gameOverSound;
     public AudioSource hurtPlayerSound;
+    public AudioSource GetAmmoSound;
 
     public Image image;
     public float newAlpha = 0.8f;
@@ -35,10 +37,19 @@ public class PlayerInteractions : MonoBehaviour
     }
    private void OnTriggerEnter(Collider other)
    {
+       if(other.gameObject.CompareTag("Goal"))
+       {
+            //Scene nexlevel;         //this only works with next lvl, i must add a level array for level selesction
+            //scene = SceneManager.GetActiveScene(); this will help to find the index
+            //SceneManager.LoadScene(nexlevel.level2);
+            Debug.Log("Llegaste a la meta");
+            SceneManager.LoadScene("level2");
+       }
        if(other.gameObject.CompareTag("GunAmmo"))
        {
            GameManager.Instance.gunAmmo += other.gameObject.GetComponent<AmmoBox>().ammo;
            Destroy(other.gameObject);
+           GetAmmoSound.Play();
           // Debug.Log("Ammo + 10");
 
        }
@@ -47,6 +58,7 @@ public class PlayerInteractions : MonoBehaviour
            if( GameManager.Instance.health < 100){
            GameManager.Instance.health += other.gameObject.GetComponent<AmmoBox>().ammo;
           // Debug.Log("Health + 10");
+          GetAmmoSound.Play();
 
            }
        }

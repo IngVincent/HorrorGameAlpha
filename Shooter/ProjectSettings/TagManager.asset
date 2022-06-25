@@ -9,6 +9,9 @@ TagManager:
   - GameOver
   - Bullet
   - wall
+  - Goal
+  - Carriable
+  - Floor
   layers:
   - Default
   - TransparentFX

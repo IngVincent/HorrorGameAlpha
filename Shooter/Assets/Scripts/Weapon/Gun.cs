@@ -7,6 +7,9 @@ public class Gun : MonoBehaviour
    public Transform spawnPoint;
 
    public GameObject bullet;
+   
+   private Quaternion startRotationGun;
+   public float recoilAmount = 8;
 
    public float shotForce = 1500f;
    public float shotRate = 0.5f;
@@ -15,6 +18,7 @@ public class Gun : MonoBehaviour
 
    public AudioSource shootSound;
    public AudioSource reloadSound;
+   public AudioSource emptyMagazineSound;
 
 
 
@@ -33,8 +37,14 @@ public class Gun : MonoBehaviour
                 shotRateTime = Time.time + shotRate;
                 Destroy(newBullet,2);
                 shootSound.Play();
+             
+            }
+            else if(GameManager.Instance.gunAmmo == 0)
+            {
+                emptyMagazineSound.Play();
             }
         }
 
     }
+    
 }

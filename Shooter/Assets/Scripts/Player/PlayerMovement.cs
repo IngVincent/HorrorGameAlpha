@@ -8,7 +8,9 @@ public class PlayerMovement : MonoBehaviour
 {
     public CharacterController characterController;
 
-    public float speed = 12f;
+    public float speed = 6f;
+    public float walkingSpeed = 6f;
+    public float runningSpeed = 45f;
 
 
     public float gravity = -9.81f;
@@ -19,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
     public static bool gameIsPaused;
     public GameObject PauseButton;
     public static bool playerIsDead; 
+    public static bool theCharisRunning; 
 
     bool isGrounded;
 
@@ -55,15 +58,21 @@ public class PlayerMovement : MonoBehaviour
 
         isGrounded = Physics.CheckSphere(groundCheck.position, sphereRadius, groundMask);
         playerIsDead =PlayerInteractions.deathPlayer;
-        //Debug.Log("Jugador muerto" + playerIsDead);
+       
+        bool isRunning = Input.GetKey(KeyCode.LeftShift);
+        theCharisRunning = isRunning;
+
+        //Debug.Log("estas moviendote a " + speed + " kms/h");
 
         if(isGrounded && velocity.y <0)
         {
             velocity.y = -2f;
         }
 
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
+        float x = (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Horizontal");
+        float z = (isRunning ? runningSpeed : walkingSpeed) *Input.GetAxis("Vertical");
+
+
 
         Vector3 move = transform.right * x + transform.forward * z;
         if(Input.GetKeyDown("space")&& isGrounded)
@@ -74,11 +83,6 @@ public class PlayerMovement : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
         characterController.Move(velocity * Time.deltaTime);
 
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            
-            Debug.Log("Running");
-        }
        
         
 
